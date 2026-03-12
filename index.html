@@ -1,20 +1,178 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Portfolio</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Portfolio</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:linear-gradient(-45deg,#0f2027,#203a43,#2c5364,#000000);
+background-size:400% 400%;
+animation:gradient 12s ease infinite;
+color:white;
+}
+
+@keyframes gradient{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+nav{
+position:fixed;
+width:100%;
+display:flex;
+justify-content:space-between;
+padding:20px 10%;
+background:rgba(0,0,0,0.4);
+backdrop-filter:blur(10px);
+}
+
+nav a{
+color:white;
+text-decoration:none;
+margin-left:20px;
+font-weight:500;
+}
+
+.hero{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+}
+
+.hero h1{
+font-size:3rem;
+margin-bottom:10px;
+}
+
+.hero span{
+color:#00f2ff;
+}
+
+.hero p{
+max-width:500px;
+margin-bottom:20px;
+}
+
+.btn{
+padding:12px 25px;
+border-radius:30px;
+background:#00f2ff;
+color:black;
+font-weight:bold;
+text-decoration:none;
+transition:0.3s;
+}
+
+.btn:hover{
+transform:scale(1.1);
+}
+
+section{
+padding:100px 10%;
+}
+
+.projects{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
+}
+
+.card{
+background:rgba(255,255,255,0.05);
+border-radius:20px;
+padding:30px;
+backdrop-filter:blur(10px);
+transition:0.4s;
+}
+
+.card:hover{
+transform:translateY(-10px);
+background:rgba(255,255,255,0.1);
+}
+
+footer{
+text-align:center;
+padding:30px;
+opacity:0.7;
+}
+
+</style>
 </head>
 
 <body>
-    <h1>Hello, I'm [Your Name]</h1>
-    <p>Welcome to my portfolio website.</p>
 
-    <h2>Projects</h2>
-    <ul>
-        <li>Project 1</li>
-        <li>Project 2</li>
-    </ul>
+<nav>
+<div><b>MyPortfolio</b></div>
+<div>
+<a href="#about">About</a>
+<a href="#projects">Projects</a>
+<a href="#contact">Contact</a>
+</div>
+</nav>
 
-    <h2>Contact</h2>
-    <p>Email: your@email.com</p>
+<section class="hero">
+<h1>Hello I'm <span>Your Name</span></h1>
+<p>A curious developer exploring programming, science, and interesting ideas.</p>
+<a class="btn" href="#projects">View Projects</a>
+</section>
+
+<section id="about">
+<h2>About Me</h2>
+<br>
+<p>
+I am passionate about programming and science. I enjoy building projects and exploring complex topics like physics and computational ideas.
+</p>
+</section>
+
+<section id="projects">
+<h2>Projects</h2>
+<br>
+
+<div class="projects">
+
+<div class="card">
+<h3>Project One</h3>
+<p>Description of your project.</p>
+</div>
+
+<div class="card">
+<h3>Project Two</h3>
+<p>Description of your project.</p>
+</div>
+
+<div class="card">
+<h3>Project Three</h3>
+<p>Description of your project.</p>
+</div>
+
+</div>
+</section>
+
+<section id="contact">
+<h2>Contact</h2>
+<br>
+<p>Email: your@email.com</p>
+</section>
+
+<footer>
+© 2026 Your Name
+</footer>
+
 </body>
 </html>
