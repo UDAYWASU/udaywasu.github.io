@@ -1,363 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uday Wasu | Autonomous Systems</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050505;
+            --accent: #38bdf8;
+            --text-main: #f8fafc;
+            --text-dim: #64748b;
+            --cursor-x: 50vw;
+            --cursor-y: 50vh;
+        }
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Uday Wasu | AI & Robotics</title>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+        body, html {
+            width: 100%;
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow: hidden; /* Prevents scroll on the landing hero */
+        }
 
-<style>
+        /* The Lidar/Blueprint Background */
+        .blueprint-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(56, 189, 248, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.3;
+            z-index: 0;
+        }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Poppins;
-scroll-behavior:smooth;
+        /* The Darkness Overlay that the mouse cuts through */
+/* Updated Overlay */
+.sensor-overlay {
+    position: fixed; /* Fixed ensures it stays put even if we add scrolling later */
+    top: 0; 
+    left: 0; 
+    width: 100vw; 
+    height: 100vh;
+    background: radial-gradient(
+        circle 350px at var(--cursor-x) var(--cursor-y), 
+        transparent 0%, 
+        rgba(5, 5, 5, 0.98) 70% /* Creates a sharper flashlight edge */
+    );
+    z-index: 1;
+    pointer-events: none; 
+    transition: background 0.1s ease-out; /* Adds a tiny bit of smoothness */
 }
 
-body{
-color:white;
-background:linear-gradient(-45deg,#0f2027,#203a43,#2c5364,#000000);
-background-size:400% 400%;
-animation:gradient 12s ease infinite;
+/* Also make sure your blueprint uses fixed positioning */
+.blueprint-bg {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background-image: 
+        linear-gradient(rgba(56, 189, 248, 0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56, 189, 248, 0.15) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 0;
 }
 
-@keyframes gradient{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
-}
+        /* Navigation */
+        nav {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 5%;
+        }
+        
+        .logo img {
+            height: 40px; /* Adjust based on your transparent logo */
+            filter: drop-shadow(0 0 8px rgba(56,189,248,0.5));
+        }
 
-/* NAVBAR */
+        nav ul { display: flex; list-style: none; gap: 3rem; }
+        nav a { 
+            text-decoration: none; 
+            color: var(--text-main); 
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s; 
+        }
+        nav a:hover { color: var(--accent); }
 
-nav{
-position:fixed;
-width:100%;
-display:flex;
-justify-content:space-between;
-padding:20px 10%;
-background:rgba(0,0,0,0.5);
-backdrop-filter:blur(10px);
-z-index:10;
-}
+        /* Hero Content */
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            height: calc(100vh - 100px);
+            padding-left: 10%;
+            max-width: 800px;
+        }
 
-nav a{
-color:white;
-text-decoration:none;
-margin-left:20px;
-font-weight:500;
-}
+        .system-status {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent);
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 2px;
+            animation: pulse 2s infinite;
+        }
 
-/* HERO */
+        h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
 
-.hero{
-height:100vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
-padding:20px;
-}
+        p.subtitle {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            max-width: 600px;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
 
-.hero h1{
-font-size:3.5rem;
-}
+        /* Call to Action Buttons */
+        .cta-group { display: flex; gap: 1.5rem; }
+        .btn {
+            padding: 1rem 2rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary {
+            background: var(--text-main);
+            color: var(--bg-color);
+            font-weight: 600;
+        }
+        .btn-primary:hover {
+            background: var(--accent);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+        }
+        .btn-secondary {
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--text-main);
+        }
+        .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
 
-.hero span{
-color:#00eaff;
-}
-
-.hero p{
-max-width:600px;
-margin:20px;
-opacity:.9;
-}
-
-.btn{
-background:#00eaff;
-padding:12px 25px;
-border-radius:30px;
-text-decoration:none;
-color:black;
-font-weight:600;
-margin:5px;
-transition:.3s;
-}
-
-.btn:hover{
-transform:scale(1.1);
-}
-
-/* SECTION */
-
-section{
-padding:100px 10%;
-}
-
-h2{
-margin-bottom:40px;
-}
-
-/* SKILLS */
-
-.skills{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:25px;
-}
-
-.skill{
-background:rgba(255,255,255,0.05);
-padding:20px;
-border-radius:15px;
-backdrop-filter:blur(10px);
-}
-
-/* PROJECTS */
-
-.project-category{
-margin-top:50px;
-}
-
-.projects{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:30px;
-}
-
-.card{
-background:rgba(255,255,255,0.05);
-padding:25px;
-border-radius:20px;
-transition:.3s;
-backdrop-filter:blur(10px);
-}
-
-.card:hover{
-transform:translateY(-10px);
-background:rgba(255,255,255,0.1);
-}
-
-/* RESUME */
-
-.resume{
-text-align:center;
-}
-
-iframe{
-width:100%;
-height:500px;
-border:none;
-border-radius:10px;
-}
-
-/* CONTACT */
-
-.contact{
-text-align:center;
-}
-
-footer{
-text-align:center;
-padding:40px;
-opacity:.7;
-}
-
-</style>
-
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+    </style>
 </head>
-
 <body>
 
-<nav>
-
-<div><b>Uday Wasu</b></div>
-
-<div>
-<a href="#about">About</a>
-<a href="#skills">Skills</a>
-<a href="#projects">Projects</a>
-<a href="#resume">Resume</a>
-<a href="#contact">Contact</a>
-</div>
-
-</nav>
-
-<!-- HERO -->
-
-<section class="hero">
-
-<h1>Uday <span>Wasu</span></h1>
-
-<p>
-AI & Data Science student passionate about intelligent robotics,
-computer vision, and embedded AI systems.
-</p>
-
-<div>
-
-<a class="btn" href="https://github.com/udaywasu">GitHub</a>
-
-<a class="btn" href="https://linkedin.com/in/udaywasu">LinkedIn</a>
-
-<a class="btn" href="#projects">View Projects</a>
-
-</div>
-
-</section>
-
-<!-- ABOUT -->
-
-<section id="about">
-
-<h2>About Me</h2>
-
-<p>
-Artificial Intelligence and Data Science undergraduate with strong
-interest in intelligent robotics, computer vision, and autonomous
-systems. My work focuses on combining AI with embedded hardware
-to build practical robotic and assistive technologies.
-</p>
-
-</section>
-
-<!-- SKILLS -->
-
-<section id="skills">
-
-<h2>Technical Skills</h2>
-
-<div class="skills">
-
-<div class="skill">
-<h3>AI & Data</h3>
-<p>Computer Vision, NLP, Machine Learning, Signal Processing</p>
-</div>
-
-<div class="skill">
-<h3>Robotics & Embedded</h3>
-<p>ESP32, Raspberry Pi, Sensors, PID Control, Autonomous Systems</p>
-</div>
-
-<div class="skill">
-<h3>Programming</h3>
-<p>Python, C, React, Flask, Express</p>
-</div>
-
-<div class="skill">
-<h3>Databases</h3>
-<p>PostgreSQL, MongoDB, SQLite, Supabase</p>
-</div>
-
-<div class="skill">
-<h3>Electronics</h3>
-<p>IoT Systems, Hardware Integration, Electronics Design</p>
-</div>
-
-</div>
-
-</section>
-
-<!-- PROJECTS -->
-
-<section id="projects">
-
-<h2>Projects</h2>
-
-<div class="project-category">
-
-<h3>Robotics / Hardware</h3>
-
-<div class="projects">
-
-<div class="card">
-<h4>KARM – Humanoid Robot</h4>
-<p>AI-integrated humanoid system designed for elderly assistance
-with health monitoring sensors and IoT communication.</p>
-</div>
-
-<div class="card">
-<h4>QUATRO – Quadruped Robot</h4>
-<p>Autonomous four-legged robot with terrain-adaptive PID control
-for industrial inspection and surveillance.</p>
-</div>
-
-</div>
-
-</div>
-
-<div class="project-category">
-
-<h3>AI / Software</h3>
-
-<div class="projects">
-
-<div class="card">
-<h4>Samarthya – AI Interview Analyzer</h4>
-<p>Platform that evaluates interviews using speech analysis,
-NLP, and performance scoring.</p>
-</div>
-
-<div class="card">
-<h4>Face Liveness Detection</h4>
-<p>Computer vision system using reflected light to detect
-spoofing attacks.</p>
-</div>
-
-<div class="card">
-<h4>Smart Garbage Segregation</h4>
-<p>Computer vision model that classifies waste automatically.</p>
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- RESUME -->
-
-<section id="resume" class="resume">
-
-<h2>Resume</h2>
-
-<p>Preview and download my resume.</p>
-
-<br>
-
-<a class="btn" href="resume.pdf">Download Resume</a>
-
-<br><br>
-
-<iframe src="resume.pdf"></iframe>
-
-</section>
-
-<!-- CONTACT -->
-
-<section id="contact" class="contact">
-
-<h2>Contact</h2>
-
-<p>Email: xxxxxxxxx@gmail.com</p>
-
-<br>
-
-<a class="btn" href="https://github.com/udaywasu">GitHub</a>
-
-<a class="btn" href="https://linkedin.com/in/udaywasu">LinkedIn</a>
-
-</section>
-
-<footer>
-
-© 2026 Uday Wasu
-
-</footer>
-
+    <div class="blueprint-bg"></div>
+    <div class="sensor-overlay" id="sensorOverlay"></div>
+
+    <nav>
+        <div class="logo">
+            <img src="logowu.png" alt="Uday Wasu Logo" onerror="this.outerHTML='<h2 style=\'color:var(--accent); font-weight:800;\'>UW.</h2>'">
+        </div>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="resume.html">Resume</a></li>
+        </ul>
+    </nav>
+
+    <main class="hero-content">
+        <div class="system-status">SYS.OP: ONLINE // IIT_M_DATA_SCI</div>
+        <h1>Bridging <span style="color: transparent; -webkit-text-stroke: 1px var(--accent);">Data</span> <br> & Physical Space.</h1>
+        <p class="subtitle">I design intelligent control systems, computer vision algorithms, and autonomous robotics to solve complex real-world problems.</p>
+        
+        <div class="cta-group">
+            <a href="projects.html" class="btn btn-primary">Initialize.Projects()</a>
+            <a href="https://github.com/udaywasu" target="_blank" class="btn btn-secondary">View Repository</a>
+        </div>
+    </main>
+
+<script>
+    // Bulletproof Sensor Spotlight Logic
+    document.addEventListener('mousemove', (e) => {
+        // Targets the :root element directly
+        document.documentElement.style.setProperty('--cursor-x', `${e.clientX}px`);
+        document.documentElement.style.setProperty('--cursor-y', `${e.clientY}px`);
+    });
+
+    // Fallback for mobile/touch devices
+    document.addEventListener('touchmove', (e) => {
+        document.documentElement.style.setProperty('--cursor-x', `${e.touches[0].clientX}px`);
+        document.documentElement.style.setProperty('--cursor-y', `${e.touches[0].clientY}px`);
+    });
+</script>
 </body>
 </html>
