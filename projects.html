@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | Uday Wasu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050505;
+            --card-bg: #0f1115;
+            --accent: #38bdf8;
+            --accent-hw: #fb923c; /* Orange for hardware */
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --border-color: #1e293b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* Subtle Blueprint Background (Consistent with Home) */
+        .blueprint-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: 
+                linear-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 2rem 5%; background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .logo img { height: 40px; filter: drop-shadow(0 0 8px rgba(56,189,248,0.5)); }
+        nav ul { display: flex; list-style: none; gap: 3rem; }
+        nav a { text-decoration: none; color: var(--text-main); font-size: 0.9rem; text-transform: uppercase; transition: color 0.3s; }
+        nav a:hover, nav a.active { color: var(--accent); }
+
+        /* Page Header */
+        .page-header { padding: 4rem 5% 2rem; text-align: center; }
+        .page-header h1 { font-size: 3rem; font-weight: 800; }
+        .system-status { font-family: 'Fira Code', monospace; color: var(--accent); font-size: 0.85rem; letter-spacing: 2px; }
+
+        /* Project Sections */
+        .section-title { font-family: 'Fira Code', monospace; font-size: 1.2rem; color: var(--text-dim); margin-bottom: 2rem; padding: 0 5%; }
+        
+        .project-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem; padding: 0 5% 4rem;
+        }
+
+        /* The Cards */
+        .card {
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 8px; overflow: hidden; cursor: pointer;
+            transition: all 0.3s ease; display: flex; flex-direction: column;
+        }
+        .card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(56, 189, 248, 0.1); }
+        
+        .card-img-container { width: 100%; height: 200px; overflow: hidden; background: #1a1a1a; }
+        .card-img-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .card:hover .card-img-container img { transform: scale(1.05); }
+        
+        .card-content { padding: 1.5rem; flex-grow: 1; }
+        .card-title { font-size: 1.25rem; margin-bottom: 0.5rem; }
+        .card-desc { color: var(--text-dim); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1rem; }
+        .tag { display: inline-block; font-family: 'Fira Code', monospace; font-size: 0.7rem; padding: 4px 8px; border-radius: 4px; background: #1e293b; margin: 0 5px 5px 0; }
+
+        /* Animated Partition (The "Laser" Scanner) */
+        .partition {
+            width: 90%; height: 1px; background: var(--border-color);
+            margin: 2rem auto 4rem; position: relative; overflow: hidden;
+        }
+        .partition::after {
+            content: ''; position: absolute; top: 0; left: -50%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            animation: scan 4s infinite linear;
+        }
+        @keyframes scan { 0% { left: -50%; } 100% { left: 100%; } }
+
+        /* Modal (Detailed View) */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(5, 5, 5, 0.95); backdrop-filter: blur(10px);
+            z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+            display: flex; justify-content: center; align-items: center; padding: 2rem;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+        
+        .modal-content {
+            background: var(--card-bg); width: 100%; max-width: 900px; max-height: 90vh;
+            border: 1px solid var(--accent); border-radius: 12px; overflow-y: auto;
+            position: relative; transform: translateY(20px); transition: transform 0.3s ease;
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        
+        .close-btn {
+            position: sticky; top: 1rem; right: 1rem; float: right;
+            background: var(--bg-color); border: 1px solid var(--border-color); color: white;
+            width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+            font-family: 'Fira Code', monospace; font-size: 1.2rem; z-index: 10;
+        }
+        .close-btn:hover { background: var(--accent); color: #000; }
+
+        .modal-body { padding: 2rem; clear: both; }
+        .modal-hero-img { width: 100%; height: 350px; object-fit: cover; border-radius: 8px; margin-bottom: 2rem; }
+        .modal-title { font-size: 2.5rem; margin-bottom: 1rem; }
+        .modal-text { color: var(--text-dim); line-height: 1.8; margin-bottom: 2rem; }
+        
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; margin-top: 2rem; }
+        .gallery-grid img { width: 100%; height: 150px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border-color); }
+
+        /* Custom Scrollbar for Modal */
+        .modal-content::-webkit-scrollbar { width: 8px; }
+        .modal-content::-webkit-scrollbar-track { background: var(--bg-color); }
+        .modal-content::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+        .modal-content::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <div class="blueprint-bg"></div>
+
+    <nav>
+        <div class="logo">
+            <img src="logowu.png" alt="UW Logo" onerror="this.outerHTML='<h2 style=\'color:var(--accent); font-weight:800;\'>UW.</h2>'">
+        </div>
+        <ul>
+            <li><a href="index.html">About</a></li>
+            <li><a href="projects.html" class="active">Projects</a></li>
+            <li><a href="resume.html">Resume</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-header">
+        <div class="system-status">SYS.OP: DATABASE_QUERY // PROJECTS</div>
+        <h1>My Work.</h1>
+    </div>
+
+    <h2 class="section-title">> [01] Robotics_and_Embedded_Systems</h2>
+    <div class="project-grid" id="hardware-grid">
+        </div>
+
+    <div class="partition"></div>
+
+    <h2 class="section-title">> [02] AI_and_Software_Architecture</h2>
+    <div class="project-grid" id="software-grid">
+        </div>
+
+    <div class="modal-overlay" id="projectModal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="closeModal(null, true)">X</button>
+            <div class="modal-body">
+                <img src="" alt="Cover" class="modal-hero-img" id="modalHero">
+                <h2 class="modal-title" id="modalTitle">Project Title</h2>
+                <div id="modalTags" style="margin-bottom: 1.5rem;"></div>
+                <div class="modal-text" id="modalDesc">Project description goes here...</div>
+                
+                <h3 style="font-family: 'Fira Code', monospace; font-size: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 15px;">Additional Visuals</h3>
+                <div class="gallery-grid" id="modalGallery">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. THE MODULAR DATA ARRAY ---
+        // To add a new project, just copy one of these blocks and change the text/images.
+        const projects = [
+            {
+                id: "karm",
+                category: "hardware",
+                title: "KARM Humanoid",
+                shortDesc: "Elderly assistance robot with logic-driven intelligence and health monitoring.",
+                longDesc: "Designed and developed a humanoid robotic system for elderly assistance. Focus was placed on mechanical design, electronics system architecture, and hardware component selection. Integrated logic-driven intelligence with basic NLP capabilities and vision-based perception using ESP32 and Raspberry Pi, enabling natural interaction.",
+                tags: ["ESP32", "Raspberry Pi", "IoT", "NLP"],
+                coverImg: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=800", // Replace with your image paths like 'assets/karm-cover.jpg'
+                gallery: [
+                    "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?auto=format&fit=crop&q=80&w=400",
+                    "https://images.unsplash.com/photo-1589254065878-42c9da997008?auto=format&fit=crop&q=80&w=400"
+                ]
+            },
+            {
+                id: "quatro",
+                category: "hardware",
+                title: "QUATRO Quadruped",
+                shortDesc: "Autonomous terrain-adaptive robot with PID-based real-time control.",
+                longDesc: "Designed and built a four-legged robotic platform for industrial inspection and surveillance. Implemented PID-based real-time control for smooth locomotion across rough, inclined, and obstacle-laden terrain. Developed the embedded control system on ESP32, ensuring robust hardware–software integration and reliable autonomous navigation.",
+                tags: ["PID Control", "Sensors", "Autonomous Nav"],
+                coverImg: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&q=80&w=800",
+                gallery: []
+            },
+            {
+                id: "samarthya",
+                category: "software",
+                title: "Samarthya Platform",
+                shortDesc: "AI-based interview evaluation platform analyzing speech and accuracy.",
+                longDesc: "Developed an AI-driven interview evaluation platform analyzing speech rate, prosody, pitch, vocabulary usage, and answer accuracy to deliver actionable user feedback. Built the full-stack system using React, Express, PostgreSQL, and Python. Enabled data-driven interview insights by integrating AI and NLP pipelines.",
+                tags: ["React", "Python", "NLP", "PostgreSQL"],
+                coverImg: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800",
+                gallery: [
+                    "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=400"
+                ]
+            },
+            {
+                id: "liveness",
+                category: "software",
+                title: "Face Liveness Detection",
+                shortDesc: "Security authentication system using reflected light patterns.",
+                longDesc: "Developed a Face Liveness Detection System using reflected light to prevent spoofing in authentication processes. Combined computer vision techniques and applied machine learning to analyze the reflection mapping on 3D facial structures versus 2D flat surfaces (like a photograph).",
+                tags: ["Computer Vision", "Applied ML"],
+                coverImg: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=800",
+                gallery: []
+            }
+        ];
+
+        // --- 2. DYNAMICALLY BUILD THE CARDS ---
+        const hwGrid = document.getElementById('hardware-grid');
+        const swGrid = document.getElementById('software-grid');
+
+        projects.forEach(proj => {
+            // Generate tags HTML
+            let tagsHtml = proj.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+            
+            // Build the card HTML
+            const cardHtml = `
+                <div class="card" onclick="openModal('${proj.id}')">
+                    <div class="card-img-container">
+                        <img src="${proj.coverImg}" alt="${proj.title}">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">${proj.title}</h3>
+                        <p class="card-desc">${proj.shortDesc}</p>
+                        <div>${tagsHtml}</div>
+                    </div>
+                </div>
+            `;
+
+            // Append to correct partition
+            if (proj.category === 'hardware') {
+                hwGrid.innerHTML += cardHtml;
+            } else {
+                swGrid.innerHTML += cardHtml;
+            }
+        });
+
+        // --- 3. MODAL LOGIC ---
+        const modal = document.getElementById('projectModal');
+
+        function openModal(projectId) {
+            // Find the project data
+            const proj = projects.find(p => p.id === projectId);
+            
+            // Populate Modal Content
+            document.getElementById('modalHero').src = proj.coverImg;
+            document.getElementById('modalTitle').innerText = proj.title;
+            document.getElementById('modalDesc').innerText = proj.longDesc;
+            
+            // Populate Tags
+            document.getElementById('modalTags').innerHTML = proj.tags.map(tag => `<span class="tag" style="background:var(--bg-color); border:1px solid var(--accent);">${tag}</span>`).join('');
+            
+            // Populate Gallery
+            const galleryContainer = document.getElementById('modalGallery');
+            if (proj.gallery && proj.gallery.length > 0) {
+                galleryContainer.style.display = 'grid';
+                galleryContainer.innerHTML = proj.gallery.map(imgSrc => `<img src="${imgSrc}" alt="Gallery image">`).join('');
+            } else {
+                galleryContainer.style.display = 'none'; // Hide if no extra photos
+            }
+
+            // Show Modal and lock body scrolling
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(event, forceClose = false) {
+            // Close if clicking the background overlay OR the X button
+            if (forceClose || event.target === modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto'; // Restore scrolling
+            }
+        }
+    </script>
+</body>
+</html>
