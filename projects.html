@@ -179,54 +179,132 @@
     <script>
         // --- 1. THE MODULAR DATA ARRAY ---
         // To add a new project, just copy one of these blocks and change the text/images.
+       // --- 1. THE MODULAR DATA ARRAY ---
         const projects = [
+            // --- HARDWARE / ROBOTICS ---
             {
                 id: "karm",
                 category: "hardware",
                 title: "KARM Humanoid",
-                shortDesc: "Elderly assistance robot with logic-driven intelligence and health monitoring.",
-                longDesc: "Designed and developed a humanoid robotic system for elderly assistance. Focus was placed on mechanical design, electronics system architecture, and hardware component selection. Integrated logic-driven intelligence with basic NLP capabilities and vision-based perception using ESP32 and Raspberry Pi, enabling natural interaction.",
-                tags: ["ESP32", "Raspberry Pi", "IoT", "NLP"],
-                coverImg: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=800", // Replace with your image paths like 'assets/karm-cover.jpg'
-                gallery: [
-                    "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?auto=format&fit=crop&q=80&w=400",
-                    "https://images.unsplash.com/photo-1589254065878-42c9da997008?auto=format&fit=crop&q=80&w=400"
-                ]
+                shortDesc: "AI-integrated humanoid for elderly assistance and health monitoring.",
+                longDesc: "A multi-modal robotic system focusing on mechanical design and hardware-software integration. Features include health-monitoring sensor arrays, logic-driven intelligence using ESP32/Raspberry Pi, and basic NLP for natural human interaction.",
+                tags: ["Robotics", "ESP32", "NLP", "Healthcare"],
+                coverImg: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?q=80&w=1000",
+                gallery: []
             },
             {
                 id: "quatro",
                 category: "hardware",
                 title: "QUATRO Quadruped",
-                shortDesc: "Autonomous terrain-adaptive robot with PID-based real-time control.",
-                longDesc: "Designed and built a four-legged robotic platform for industrial inspection and surveillance. Implemented PID-based real-time control for smooth locomotion across rough, inclined, and obstacle-laden terrain. Developed the embedded control system on ESP32, ensuring robust hardware–software integration and reliable autonomous navigation.",
-                tags: ["PID Control", "Sensors", "Autonomous Nav"],
-                coverImg: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&q=80&w=800",
+                shortDesc: "Autonomous four-legged platform with terrain-adaptive PID control.",
+                longDesc: "Designed for industrial inspection, QUATRO uses real-time PID control to navigate rough and inclined terrains. Integrated environmental sensors allow for autonomous decision-making and obstacle avoidance.",
+                tags: ["PID Control", "Dynamics", "Embedded"],
+                coverImg: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1000",
+                gallery: []
+            },
+            {
+                id: "gcra",
+                category: "hardware",
+                title: "GCRA",
+                shortDesc: "Gesture Controlled Robotic Arm for precision tasks.",
+                longDesc: "A hardware-software hybrid project utilizing flex sensors and accelerometers to map human hand gestures to a multi-DOF robotic arm in real-time.",
+                tags: ["Kinematics", "Sensors", "Arduino"],
+                coverImg: "https://images.unsplash.com/photo-1561557944-6e7860d1a7eb?q=80&w=1000",
+                gallery: []
+            },
+            {
+                id: "mr-bin",
+                category: "hardware",
+                title: "Mr. Bin",
+                shortDesc: "Smart waste segregation using Computer Vision and IoT.",
+                longDesc: "An automated waste management system that uses an off-the-shelf camera and a vision model to classify and segregate waste into biodegradable and non-biodegradable categories automatically.",
+                tags: ["Computer Vision", "IoT", "Sustainability"],
+                coverImg: "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=1000",
+                gallery: []
+            },
+
+            // --- SOFTWARE / AI ---
+            {
+                id: "resq",
+                category: "software",
+                title: "RES-Q Ecosystem",
+                shortDesc: "IoT-Enabled Critical Emergency Response mobile infrastructure.",
+                longDesc: "A mission-critical 'Push' model for medical emergencies. Uses the Haversine formula for 25km-radius specialized center routing. Features multi-vector SOS (Cardiac, Accident) and real-time vitals transmission to hospitals before arrival.",
+                tags: ["Mission Critical", "IoT", "Mobile Dev"],
+                coverImg: "https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?q=80&w=1000",
                 gallery: []
             },
             {
                 id: "samarthya",
                 category: "software",
-                title: "Samarthya Platform",
-                shortDesc: "AI-based interview evaluation platform analyzing speech and accuracy.",
-                longDesc: "Developed an AI-driven interview evaluation platform analyzing speech rate, prosody, pitch, vocabulary usage, and answer accuracy to deliver actionable user feedback. Built the full-stack system using React, Express, PostgreSQL, and Python. Enabled data-driven interview insights by integrating AI and NLP pipelines.",
-                tags: ["React", "Python", "NLP", "PostgreSQL"],
-                coverImg: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800",
-                gallery: [
-                    "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=400"
-                ]
+                title: "Samarthya",
+                shortDesc: "AI-driven interview evaluation and speech analysis platform.",
+                longDesc: "Full-stack platform (React/Python/PostgreSQL) that analyzes prosody, pitch, and accuracy to provide data-driven feedback for interviewees.",
+                tags: ["AI", "NLP", "Full-Stack"],
+                coverImg: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000",
+                gallery: []
+            },
+            {
+                id: "dishapath",
+                category: "software",
+                title: "DISHAPATH",
+                shortDesc: "Modern Placement Portal with automated scheduling.",
+                longDesc: "Advanced application utilizing Flask, Celery, and Redis for background task management and scheduled job processing for students and recruiters.",
+                tags: ["Redis", "Celery", "Flask"],
+                coverImg: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1000",
+                gallery: []
+            },
+            {
+                id: "genesis",
+                category: "software",
+                title: "GENESIS",
+                shortDesc: "Community and learning platform for entrepreneurs.",
+                longDesc: "A tailored web ecosystem for start-up founders built with React and Tailwind CSS, backed by a Flask API.",
+                tags: ["React", "Tailwind", "Community"],
+                coverImg: "https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=1000",
+                gallery: []
+            },
+            {
+                id: "parkr",
+                category: "software",
+                title: "PARKR",
+                shortDesc: "Smart Android parking management and slot booking.",
+                longDesc: "Streamlines urban parking by allowing users to find, reserve, and manage 4-wheeler parking slots efficiently via a mobile interface.",
+                tags: ["Android", "Java/Kotlin", "Management"],
+                coverImg: "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?q=80&w=1000",
+                gallery: []
+            },
+            {
+                id: "collector-office",
+                category: "software",
+                title: "Data Mgmt Software",
+                shortDesc: "Official management and visualization for Amravati Collector Office.",
+                longDesc: "Custom-built React and Express application integrated with Looker Studio for high-level data visualization and administrative management.",
+                tags: ["React", "Looker Studio", "Government"],
+                coverImg: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000",
+                gallery: []
             },
             {
                 id: "liveness",
                 category: "software",
-                title: "Face Liveness Detection",
-                shortDesc: "Security authentication system using reflected light patterns.",
-                longDesc: "Developed a Face Liveness Detection System using reflected light to prevent spoofing in authentication processes. Combined computer vision techniques and applied machine learning to analyze the reflection mapping on 3D facial structures versus 2D flat surfaces (like a photograph).",
-                tags: ["Computer Vision", "Applied ML"],
-                coverImg: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=800",
+                title: "Face Liveness",
+                shortDesc: "Anti-spoofing authentication using reflection mapping.",
+                longDesc: "Security system using computer vision to differentiate between 3D facial structures and 2D spoof attempts (photos/videos).",
+                tags: ["CV", "Security", "ML"],
+                coverImg: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1000",
+                gallery: []
+            },
+            {
+                id: "chatbots",
+                category: "software",
+                title: "Conversational AI Suite",
+                shortDesc: "CPGRAMS and PMITRA governance/student chatbots.",
+                longDesc: "Basic NLP-driven chatbots designed for grievance management and resolving parent/student queries efficiently.",
+                tags: ["NLP", "Automation", "Chatbots"],
+                coverImg: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?q=80&w=1000",
                 gallery: []
             }
         ];
-
         // --- 2. DYNAMICALLY BUILD THE CARDS ---
         const hwGrid = document.getElementById('hardware-grid');
         const swGrid = document.getElementById('software-grid');
